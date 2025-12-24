@@ -36,21 +36,33 @@ import 'shared/widgets/snackbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:system_fonts/system_fonts.dart';
 import 'package:flutter/painting.dart' show PaintingBinding;
-import 'dart:io' show HttpOverrides, Platform; // kept for global override usage inside provider
+import 'dart:io' show HttpOverrides, Platform, File, Directory; // kept for global override usage inside provider
 import 'core/services/android_background.dart';
 import 'core/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 final RouteObserver<ModalRoute<dynamic>> routeObserver = RouteObserver<ModalRoute<dynamic>>();
 bool _didCheckUpdates = false; // one-time update check flag
 bool _didEnsureAssistants = false; // ensure defaults after l10n ready
 bool _didEnsureSystemFonts = false; // one-time system fonts load when needed
 
+// Temporary crash log for debugging MCP startup issues
+Future<void> _writeCrashLog(String message) async {
+  try {
+    final dir = await path_provider.getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/kelivo_crash_debug.log');
+    final timestamp = DateTime.now().toIso8601String();
+    await file.writeAsString('[$timestamp] $message\n', mode: FileMode.append);
+  } catch (_) {}
+}
 
 Future<void> main() async {
   await runZoned(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      await _writeCrashLog('App starting...');
+      await _writeCrashLog('Platform.environment PATH: ${Platform.environment['PATH']?.substring(0, 200) ?? 'null'}...');
       FlutterLogger.installGlobalHandlers();
       try {
         final prefs = await SharedPreferences.getInstance();

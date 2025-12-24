@@ -50,19 +50,32 @@ class StdioClientTransport implements ClientTransport {
 
     // Merge parent environment with custom environment to ensure PATH is available
     // This fixes the issue where double-clicking .app on macOS doesn't inherit shell PATH
-    final mergedEnv = <String, String>{
-      ...Platform.environment,
-      if (environment != null) ...environment,
-    };
+    Map<String, String> mergedEnv;
+    try {
+      mergedEnv = <String, String>{
+        ...Platform.environment,
+        if (environment != null) ...environment,
+      };
+      _logger.debug('Merged environment PATH: ${mergedEnv['PATH']?.substring(0, 100) ?? 'null'}...');
+    } catch (e) {
+      _logger.debug('Failed to merge environment: $e, using custom only');
+      mergedEnv = environment ?? const {};
+    }
 
-    final process = await Process.start(
-      command,
-      arguments,
-      workingDirectory: workingDirectory,
-      environment: mergedEnv,
-    );
-
-    return StdioClientTransport._internal(process);
+    try {
+      final process = await Process.start(
+        command,
+        arguments,
+        workingDirectory: workingDirectory,
+        environment: mergedEnv.isEmpty ? null : mergedEnv,
+      );
+      _logger.debug('Process started successfully with PID: ${process.pid}');
+      return StdioClientTransport._internal(process);
+    } catch (e, st) {
+      _logger.debug('Failed to start process "$command": $e');
+      _logger.debug('Stack trace: $st');
+      rethrow;
+    }
   }
 
   void _initialize() {

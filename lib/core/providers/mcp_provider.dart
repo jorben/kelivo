@@ -1,11 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io' show File, FileMode, Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:mcp_client/mcp_client.dart' as mcp;
 import '../services/mcp/kelivo_fetch/kelivo_fetch_server.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
+
+// Temporary crash log for debugging MCP startup issues
+Future<void> _writeMcpCrashLog(String message) async {
+  try {
+    final dir = await path_provider.getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/kelivo_crash_debug.log');
+    final timestamp = DateTime.now().toIso8601String();
+    await file.writeAsString('[$timestamp] [MCP] $message\n', mode: FileMode.append);
+  } catch (_) {}
+}
 
 /// Transport type: SSE, Streamable HTTP, and STDIO (desktop-only).
 enum McpTransportType { sse, http, stdio, inmemory }
@@ -600,6 +612,7 @@ class McpProvider extends ChangeNotifier {
 
   Future<void> connect(String id) async {
     final server = _servers.firstWhere((e) => e.id == id, orElse: () => throw StateError('Server not found'));
+    await _writeMcpCrashLog('connect() called for id=$id name=${server.name} transport=${server.transport.name}');
     // If already connected, try a ping by listing tools quickly; else return
     if (_clients.containsKey(id)) {
       // Already connected; update status just in case
@@ -613,18 +626,7 @@ class McpProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Log connect intent and parameters
-      // debugPrint('[MCP/Connect] id=$id name=${server.name} transport=${server.transport.name}');
-      // debugPrint('[MCP/Connect] url=${server.url}');
-      // if (server.headers.isNotEmpty) {
-      //   debugPrint('[MCP/Headers] ${server.headers.length} headers:');
-      //   server.headers.forEach((k, v) {
-      //     final masked = _maskIfSensitive(k, v);
-      //     debugPrint('  - $k: $masked');
-      //   });
-      // } else {
-      //   debugPrint('[MCP/Headers] (none)');
-      // }
+      await _writeMcpCrashLog('connect() creating config for id=$id');
 
       final clientConfig = mcp.McpClient.simpleConfig(
         name: 'Kelivo MCP',
@@ -636,6 +638,7 @@ class McpProvider extends ChangeNotifier {
 
       // In-memory builtin server path
       if (server.transport == McpTransportType.inmemory) {
+        await _writeMcpCrashLog('connect() inmemory transport for id=$id');
         final engine = KelivoFetchMcpServerEngine();
         final transport = KelivoInMemoryClientTransport(engine);
         final client = mcp.McpClient.createClient(clientConfig);
@@ -646,6 +649,7 @@ class McpProvider extends ChangeNotifier {
         notifyListeners();
         await refreshTools(id);
         _startHeartbeat(id);
+        await _writeMcpCrashLog('connect() inmemory connected for id=$id');
         return;
       }
 
@@ -680,7 +684,8 @@ class McpProvider extends ChangeNotifier {
         }
       }();
 
-      // debugPrint('[MCP/Connect] creating client (enableDebugLogging=true) ...');
+      await _writeMcpCrashLog('connect() calling createAndConnect for id=$id command=${server.command}');
+      await _writeMcpCrashLog('connect() Platform.environment PATH length: ${Platform.environment['PATH']?.length ?? 0}');
       final clientResult = await mcp.McpClient.createAndConnect(
         config: clientConfig,
         transportConfig: transportConfig,
@@ -690,19 +695,17 @@ class McpProvider extends ChangeNotifier {
       _clients[id] = client;
       _status[id] = McpStatus.connected;
       _errors.remove(id);
-      // debugPrint('[MCP/Connected] id=$id (${server.name})');
+      await _writeMcpCrashLog('connect() connected successfully for id=$id');
       notifyListeners();
 
       // Try to refresh tools once connected
-      // debugPrint('[MCP/Tools] refreshing tools for id=$id ...');
       await refreshTools(id);
-      // debugPrint('[MCP/Tools] refresh done for id=$id');
 
       // Start/refresh heartbeat for this connection
       _startHeartbeat(id);
-    } catch (e) {
-      // debugPrint('[MCP/Error] connect failed for id=$id (${server.name})');
-      // _logMcpException('connect', serverId: id, error: e, stack: st);
+    } catch (e, st) {
+      await _writeMcpCrashLog('connect() FAILED for id=$id: $e');
+      await _writeMcpCrashLog('connect() stack: $st');
       _status[id] = McpStatus.error;
       _errors[id] = e.toString();
       notifyListeners();
