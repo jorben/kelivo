@@ -156,4 +156,9 @@ class Lucide {
   static const IconData FileQuestion = lucide.LucideIcons.fileQuestionMark;
   static const IconData FileClock = lucide.LucideIcons.fileClock;
   static const IconData Folder = lucide.LucideIcons.folder;
+  static const IconData CircleCheck = lucide.LucideIcons.circleCheck;
+  static const IconData CircleAlert = lucide.LucideIcons.circleAlert;
+  static const IconData CircleHelp = lucide.LucideIcons.info;
+  static const IconData Package = lucide.LucideIcons.package;
+  static const IconData AlertTriangle = lucide.LucideIcons.triangleAlert;
 }
