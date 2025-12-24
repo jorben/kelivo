@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:io' show Process, HttpClient, ContentType;
+import 'dart:io' show Process, HttpClient, ContentType, Platform;
 
 import '../../logger.dart';
 import '../models/models.dart';
@@ -48,11 +48,18 @@ class StdioClientTransport implements ClientTransport {
   }) async {
     _logger.debug('Starting process: $command ${arguments.join(' ')}');
 
+    // Merge parent environment with custom environment to ensure PATH is available
+    // This fixes the issue where double-clicking .app on macOS doesn't inherit shell PATH
+    final mergedEnv = <String, String>{
+      ...Platform.environment,
+      if (environment != null) ...environment,
+    };
+
     final process = await Process.start(
       command,
       arguments,
       workingDirectory: workingDirectory,
-      environment: environment,
+      environment: mergedEnv,
     );
 
     return StdioClientTransport._internal(process);
