@@ -3302,6 +3302,49 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mcpTimeoutInvalid => '请输入大于 0 的秒数';
 
   @override
+  String get bunRuntimeTitle => 'Bun 运行时';
+
+  @override
+  String get bunRuntimeDescription =>
+      'Bun 是一个快速的 JavaScript 运行时，可以替代 npx 运行 MCP 服务器。这有助于解决 Node.js 环境问题（如 nvm 路径不在 PATH 中）。';
+
+  @override
+  String get bunStatusReady => '已安装';
+
+  @override
+  String get bunStatusNotInstalled => '未安装';
+
+  @override
+  String get bunStatusInstalling => '安装中...';
+
+  @override
+  String get bunStatusChecking => '检查中...';
+
+  @override
+  String get bunStatusError => '错误';
+
+  @override
+  String get bunStatusUnknown => '未知';
+
+  @override
+  String get bunUseMirror => '使用镜像加速下载（中国用户推荐）';
+
+  @override
+  String get bunDownload => '下载 Bun';
+
+  @override
+  String get bunReinstall => '重新安装';
+
+  @override
+  String get bunOpenFolder => '打开目录';
+
+  @override
+  String get bunInstallSuccess => 'Bun 安装成功';
+
+  @override
+  String get bunInstallFailed => 'Bun 安装失败';
+
+  @override
   String get quickPhraseEditButton => '编辑';
 
   @override
@@ -6883,6 +6926,49 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get mcpTimeoutInvalid => '请输入大于 0 的秒数';
 
   @override
+  String get bunRuntimeTitle => 'Bun 运行时';
+
+  @override
+  String get bunRuntimeDescription =>
+      'Bun 是一个快速的 JavaScript 运行时，可以替代 npx 运行 MCP 服务器。这有助于解决 Node.js 环境问题（如 nvm 路径不在 PATH 中）。';
+
+  @override
+  String get bunStatusReady => '已安装';
+
+  @override
+  String get bunStatusNotInstalled => '未安装';
+
+  @override
+  String get bunStatusInstalling => '安装中...';
+
+  @override
+  String get bunStatusChecking => '检查中...';
+
+  @override
+  String get bunStatusError => '错误';
+
+  @override
+  String get bunStatusUnknown => '未知';
+
+  @override
+  String get bunUseMirror => '使用镜像加速下载（中国用户推荐）';
+
+  @override
+  String get bunDownload => '下载 Bun';
+
+  @override
+  String get bunReinstall => '重新安装';
+
+  @override
+  String get bunOpenFolder => '打开目录';
+
+  @override
+  String get bunInstallSuccess => 'Bun 安装成功';
+
+  @override
+  String get bunInstallFailed => 'Bun 安装失败';
+
+  @override
   String get quickPhraseEditButton => '编辑';
 
   @override
@@ -10460,6 +10546,49 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get mcpTimeoutInvalid => '請輸入大於 0 的秒數';
+
+  @override
+  String get bunRuntimeTitle => 'Bun 執行環境';
+
+  @override
+  String get bunRuntimeDescription =>
+      'Bun 是一個快速的 JavaScript 執行環境，可以替代 npx 執行 MCP 伺服器。這有助於解決 Node.js 環境問題（如 nvm 路徑不在 PATH 中）。';
+
+  @override
+  String get bunStatusReady => '已安裝';
+
+  @override
+  String get bunStatusNotInstalled => '未安裝';
+
+  @override
+  String get bunStatusInstalling => '安裝中...';
+
+  @override
+  String get bunStatusChecking => '檢查中...';
+
+  @override
+  String get bunStatusError => '錯誤';
+
+  @override
+  String get bunStatusUnknown => '未知';
+
+  @override
+  String get bunUseMirror => '使用鏡像加速下載（中國用戶推薦）';
+
+  @override
+  String get bunDownload => '下載 Bun';
+
+  @override
+  String get bunReinstall => '重新安裝';
+
+  @override
+  String get bunOpenFolder => '開啟目錄';
+
+  @override
+  String get bunInstallSuccess => 'Bun 安裝成功';
+
+  @override
+  String get bunInstallFailed => 'Bun 安裝失敗';
 
   @override
   String get quickPhraseEditButton => '編輯';

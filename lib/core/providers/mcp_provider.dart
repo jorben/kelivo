@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:mcp_client/mcp_client.dart' as mcp;
 import '../services/mcp/kelivo_fetch/kelivo_fetch_server.dart';
+import '../services/bun_runtime_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -207,6 +208,7 @@ class McpServerConfig {
 class McpProvider extends ChangeNotifier {
   static const String _prefsKey = 'mcp_servers_v1';
   static const String _prefsTimeoutKey = 'mcp_request_timeout_ms_v1';
+  static const String _prefsUseBunKey = 'mcp_use_bun_v1';
 
   final Map<String, mcp.Client> _clients = {};
   final Map<String, McpStatus> _status = {}; // id -> status
@@ -217,6 +219,12 @@ class McpProvider extends ChangeNotifier {
   // Heartbeat timers for live-connection health checks
   final Map<String, Timer> _heartbeats = <String, Timer>{};
   Duration _requestTimeout = const Duration(seconds: 30);
+
+  // Bun runtime integration
+  bool _useBunForStdio = true; // Whether to use embedded Bun for STDIO servers
+  bool _bunReady = false; // Whether Bun is ready (installed or check complete)
+  bool _bunCheckComplete = false; // Whether initial Bun check is done
+  final List<String> _pendingStdioConnections = []; // STDIO servers waiting for Bun
 
   McpProvider() {
     _load();
@@ -232,12 +240,24 @@ class McpProvider extends ChangeNotifier {
   Duration get requestTimeout => _requestTimeout;
   int get requestTimeoutSeconds => _requestTimeout.inSeconds;
 
+  /// Whether to use embedded Bun for STDIO MCP servers.
+  bool get useBunForStdio => _useBunForStdio;
+
+  /// Whether Bun environment check is complete.
+  bool get bunCheckComplete => _bunCheckComplete;
+
+  /// Whether Bun is ready to use.
+  bool get bunReady => _bunReady;
+
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();
     final timeoutMs = prefs.getInt(_prefsTimeoutKey);
     if (timeoutMs != null && timeoutMs > 0) {
       _requestTimeout = Duration(milliseconds: timeoutMs);
     }
+    // Load Bun preference
+    _useBunForStdio = prefs.getBool(_prefsUseBunKey) ?? true;
+
     final raw = prefs.getString(_prefsKey);
     if (raw != null && raw.isNotEmpty) {
       try {
@@ -256,11 +276,92 @@ class McpProvider extends ChangeNotifier {
     }
     notifyListeners();
 
-    // Auto-connect enabled servers
-    for (final s in _servers.where((e) => e.enabled)) {
-      // fire and forget
+    // Check Bun availability before connecting STDIO servers
+    await _checkBunAndConnect();
+  }
+
+  /// Check Bun availability and connect servers accordingly.
+  ///
+  /// - Non-STDIO servers connect immediately
+  /// - STDIO servers wait for Bun check to complete (if useBunForStdio is enabled)
+  Future<void> _checkBunAndConnect() async {
+    final enabledServers = _servers.where((e) => e.enabled).toList();
+    final stdioServers = enabledServers.where((s) => s.transport == McpTransportType.stdio).toList();
+    final nonStdioServers = enabledServers.where((s) => s.transport != McpTransportType.stdio).toList();
+
+    // Connect non-STDIO servers immediately (SSE, HTTP, inmemory)
+    for (final s in nonStdioServers) {
       unawaited(connect(s.id));
     }
+
+    // For STDIO servers, check Bun first if enabled
+    if (stdioServers.isEmpty) {
+      _bunCheckComplete = true;
+      _bunReady = false;
+      notifyListeners();
+      return;
+    }
+
+    if (_useBunForStdio && _isDesktopPlatform()) {
+      // Check if Bun is installed
+      try {
+        final bunService = BunRuntimeService.instance;
+        if (bunService.isPlatformSupported()) {
+          final installed = await bunService.isInstalled();
+          _bunReady = installed;
+        } else {
+          _bunReady = false;
+        }
+      } catch (_) {
+        _bunReady = false;
+      }
+    } else {
+      _bunReady = false;
+    }
+
+    _bunCheckComplete = true;
+    notifyListeners();
+
+    // Now connect STDIO servers
+    // If Bun is ready, they will use Bun; otherwise fall back to system command
+    for (final s in stdioServers) {
+      unawaited(connect(s.id));
+    }
+  }
+
+  /// Called when Bun becomes ready (after installation).
+  /// Connects any pending STDIO servers.
+  Future<void> onBunReady() async {
+    _bunReady = true;
+    _bunCheckComplete = true;
+    notifyListeners();
+
+    // Connect pending STDIO servers
+    final pending = List<String>.from(_pendingStdioConnections);
+    _pendingStdioConnections.clear();
+
+    for (final id in pending) {
+      unawaited(connect(id));
+    }
+
+    // Also try to reconnect any failed STDIO servers
+    for (final s in _servers.where((s) => s.enabled && s.transport == McpTransportType.stdio)) {
+      if (statusFor(s.id) == McpStatus.error || statusFor(s.id) == McpStatus.idle) {
+        unawaited(connect(s.id));
+      }
+    }
+  }
+
+  /// Set whether to use embedded Bun for STDIO servers.
+  Future<void> setUseBunForStdio(bool value) async {
+    if (_useBunForStdio == value) return;
+    _useBunForStdio = value;
+    notifyListeners();
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_prefsUseBunKey, value);
+    } catch (_) {}
   }
 
   void _ensureBuiltinFetchServerPresent() {
@@ -608,6 +709,18 @@ class McpProvider extends ChangeNotifier {
       notifyListeners();
       return;
     }
+
+    // For STDIO servers, check if we should wait for Bun
+    if (server.transport == McpTransportType.stdio && _useBunForStdio && !_bunCheckComplete) {
+      // Add to pending list and wait for Bun check to complete
+      if (!_pendingStdioConnections.contains(id)) {
+        _pendingStdioConnections.add(id);
+      }
+      _status[id] = McpStatus.idle;
+      notifyListeners();
+      return;
+    }
+
     _status[id] = McpStatus.connecting;
     _errors.remove(id);
     notifyListeners();
@@ -650,7 +763,7 @@ class McpProvider extends ChangeNotifier {
       }
 
       final mergedHeaders = <String, String>{...server.headers};
-      final transportConfig = () {
+      final transportConfig = await () async {
         if (server.transport == McpTransportType.sse) {
           return mcp.TransportConfig.sse(
             serverUrl: server.url,
@@ -667,13 +780,26 @@ class McpProvider extends ChangeNotifier {
           if (!_isDesktopPlatform()) {
             throw StateError('STDIO transport not supported on this platform');
           }
-          final cmd = server.command;
+          var cmd = server.command;
           if (cmd == null || cmd.isEmpty) {
             throw StateError('STDIO command is empty');
           }
+
+          var args = server.args;
+
+          // If using Bun and command is npx/bunx, use embedded Bun
+          if (_useBunForStdio && _bunReady && (cmd == 'npx' || cmd == 'bunx')) {
+            final bunPath = await BunRuntimeService.instance.getBunExecutablePath();
+            if (bunPath != null) {
+              // Use bun x instead of npx
+              cmd = bunPath;
+              args = ['x', ...server.args];
+            }
+          }
+
           return mcp.TransportConfig.stdio(
             command: cmd,
-            arguments: server.args,
+            arguments: args,
             workingDirectory: server.workingDirectory,
             environment: server.env.isEmpty ? null : server.env,
           );

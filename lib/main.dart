@@ -19,6 +19,7 @@ import 'core/providers/chat_provider.dart';
 import 'core/providers/user_provider.dart';
 import 'core/providers/settings_provider.dart';
 import 'core/providers/mcp_provider.dart';
+import 'core/providers/bun_runtime_provider.dart';
 import 'core/providers/tts_provider.dart';
 import 'core/providers/assistant_provider.dart';
 import 'core/providers/tag_provider.dart';
@@ -115,6 +116,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
         ChangeNotifierProvider(create: (_) => ChatService()),
         ChangeNotifierProvider(create: (_) => McpToolService()),
+        ChangeNotifierProvider(create: (_) => BunRuntimeProvider()),
         ChangeNotifierProvider(create: (_) => McpProvider()),
         ChangeNotifierProvider(create: (_) => AssistantProvider()),
         ChangeNotifierProvider(create: (_) => TagProvider()),

@@ -6428,6 +6428,90 @@ abstract class AppLocalizations {
   /// **'Enter a positive number of seconds'**
   String get mcpTimeoutInvalid;
 
+  /// No description provided for @bunRuntimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bun Runtime'**
+  String get bunRuntimeTitle;
+
+  /// No description provided for @bunRuntimeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Bun is a fast JavaScript runtime that can be used as an alternative to npx for running MCP servers. This helps resolve Node.js environment issues (e.g., nvm paths not in PATH).'**
+  String get bunRuntimeDescription;
+
+  /// No description provided for @bunStatusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed'**
+  String get bunStatusReady;
+
+  /// No description provided for @bunStatusNotInstalled.
+  ///
+  /// In en, this message translates to:
+  /// **'Not installed'**
+  String get bunStatusNotInstalled;
+
+  /// No description provided for @bunStatusInstalling.
+  ///
+  /// In en, this message translates to:
+  /// **'Installing...'**
+  String get bunStatusInstalling;
+
+  /// No description provided for @bunStatusChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking...'**
+  String get bunStatusChecking;
+
+  /// No description provided for @bunStatusError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get bunStatusError;
+
+  /// No description provided for @bunStatusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get bunStatusUnknown;
+
+  /// No description provided for @bunUseMirror.
+  ///
+  /// In en, this message translates to:
+  /// **'Use mirror for faster downloads (China)'**
+  String get bunUseMirror;
+
+  /// No description provided for @bunDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Bun'**
+  String get bunDownload;
+
+  /// No description provided for @bunReinstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Reinstall'**
+  String get bunReinstall;
+
+  /// No description provided for @bunOpenFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Folder'**
+  String get bunOpenFolder;
+
+  /// No description provided for @bunInstallSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Bun installed successfully'**
+  String get bunInstallSuccess;
+
+  /// No description provided for @bunInstallFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Bun installation failed'**
+  String get bunInstallFailed;
+
   /// No description provided for @quickPhraseEditButton.
   ///
   /// In en, this message translates to:

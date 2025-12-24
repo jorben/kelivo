@@ -3430,6 +3430,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mcpTimeoutInvalid => 'Enter a positive number of seconds';
 
   @override
+  String get bunRuntimeTitle => 'Bun Runtime';
+
+  @override
+  String get bunRuntimeDescription =>
+      'Bun is a fast JavaScript runtime that can be used as an alternative to npx for running MCP servers. This helps resolve Node.js environment issues (e.g., nvm paths not in PATH).';
+
+  @override
+  String get bunStatusReady => 'Installed';
+
+  @override
+  String get bunStatusNotInstalled => 'Not installed';
+
+  @override
+  String get bunStatusInstalling => 'Installing...';
+
+  @override
+  String get bunStatusChecking => 'Checking...';
+
+  @override
+  String get bunStatusError => 'Error';
+
+  @override
+  String get bunStatusUnknown => 'Unknown';
+
+  @override
+  String get bunUseMirror => 'Use mirror for faster downloads (China)';
+
+  @override
+  String get bunDownload => 'Download Bun';
+
+  @override
+  String get bunReinstall => 'Reinstall';
+
+  @override
+  String get bunOpenFolder => 'Open Folder';
+
+  @override
+  String get bunInstallSuccess => 'Bun installed successfully';
+
+  @override
+  String get bunInstallFailed => 'Bun installation failed';
+
+  @override
   String get quickPhraseEditButton => 'Edit';
 
   @override
