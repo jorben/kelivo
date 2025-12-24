@@ -36,7 +36,7 @@ import 'shared/widgets/snackbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:system_fonts/system_fonts.dart';
 import 'package:flutter/painting.dart' show PaintingBinding;
-import 'dart:io' show HttpOverrides, Platform, File, Directory; // kept for global override usage inside provider
+import 'dart:io' show HttpOverrides, Platform, File, Directory, FileMode; // kept for global override usage inside provider
 import 'core/services/android_background.dart';
 import 'core/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
