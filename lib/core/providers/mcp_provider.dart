@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' show File, FileMode, Platform;
+import 'dart:io' show File, FileMode;
 
 import 'package:flutter/foundation.dart';
 import 'package:mcp_client/mcp_client.dart' as mcp;
@@ -685,7 +685,7 @@ class McpProvider extends ChangeNotifier {
       }();
 
       await _writeMcpCrashLog('connect() calling createAndConnect for id=$id command=${server.command}');
-      await _writeMcpCrashLog('connect() Platform.environment PATH length: ${Platform.environment['PATH']?.length ?? 0}');
+      // Note: Avoid accessing Platform.environment directly as it may hang in sandboxed macOS apps
       final clientResult = await mcp.McpClient.createAndConnect(
         config: clientConfig,
         transportConfig: transportConfig,

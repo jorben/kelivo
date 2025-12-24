@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:io' show Process, HttpClient, ContentType, Platform;
+import 'dart:io' show Process, HttpClient, ContentType;
 
 import '../../logger.dart';
 import '../models/models.dart';
@@ -48,26 +48,16 @@ class StdioClientTransport implements ClientTransport {
   }) async {
     _logger.debug('Starting process: $command ${arguments.join(' ')}');
 
-    // Merge parent environment with custom environment to ensure PATH is available
-    // This fixes the issue where double-clicking .app on macOS doesn't inherit shell PATH
-    Map<String, String> mergedEnv;
     try {
-      mergedEnv = <String, String>{
-        ...Platform.environment,
-        if (environment != null) ...environment,
-      };
-      _logger.debug('Merged environment PATH: ${mergedEnv['PATH']?.substring(0, 100) ?? 'null'}...');
-    } catch (e) {
-      _logger.debug('Failed to merge environment: $e, using custom only');
-      mergedEnv = environment ?? const {};
-    }
-
-    try {
+      // Use includeParentEnvironment: true to inherit PATH and other env vars
+      // This fixes the issue where double-clicking .app on macOS doesn't inherit shell PATH
+      // Note: We avoid accessing Platform.environment directly as it may hang in sandboxed apps
       final process = await Process.start(
         command,
         arguments,
         workingDirectory: workingDirectory,
-        environment: mergedEnv.isEmpty ? null : mergedEnv,
+        environment: environment,
+        includeParentEnvironment: true,
       );
       _logger.debug('Process started successfully with PID: ${process.pid}');
       return StdioClientTransport._internal(process);

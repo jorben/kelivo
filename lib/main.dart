@@ -62,8 +62,10 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       await _writeCrashLog('App starting...');
-      await _writeCrashLog('Platform.environment PATH: ${Platform.environment['PATH']?.substring(0, 200) ?? 'null'}...');
+      // Skip Platform.environment access here - it may hang in sandboxed .app
+      await _writeCrashLog('WidgetsFlutterBinding initialized');
       FlutterLogger.installGlobalHandlers();
+      await _writeCrashLog('FlutterLogger installed');
       try {
         final prefs = await SharedPreferences.getInstance();
         final enabled = prefs.getBool('flutter_log_enabled_v1') ?? false;
