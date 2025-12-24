@@ -3345,6 +3345,49 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bunInstallFailed => 'Bun 安装失败';
 
   @override
+  String get uvRuntimeTitle => 'UV 运行时';
+
+  @override
+  String get uvRuntimeDescription =>
+      'UV 是一个用 Rust 编写的快速 Python 包和项目管理器。可用于通过 uvx 命令运行基于 Python 的 MCP 服务器。';
+
+  @override
+  String get uvStatusReady => '已安装';
+
+  @override
+  String get uvStatusNotInstalled => '未安装';
+
+  @override
+  String get uvStatusInstalling => '安装中...';
+
+  @override
+  String get uvStatusChecking => '检查中...';
+
+  @override
+  String get uvStatusError => '错误';
+
+  @override
+  String get uvStatusUnknown => '未知';
+
+  @override
+  String get uvUseMirror => '使用镜像加速下载（中国用户推荐）';
+
+  @override
+  String get uvDownload => '下载 UV';
+
+  @override
+  String get uvReinstall => '重新安装';
+
+  @override
+  String get uvOpenFolder => '打开目录';
+
+  @override
+  String get uvInstallSuccess => 'UV 安装成功';
+
+  @override
+  String get uvInstallFailed => 'UV 安装失败';
+
+  @override
   String get quickPhraseEditButton => '编辑';
 
   @override
@@ -6969,6 +7012,49 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get bunInstallFailed => 'Bun 安装失败';
 
   @override
+  String get uvRuntimeTitle => 'UV 运行时';
+
+  @override
+  String get uvRuntimeDescription =>
+      'UV 是一个用 Rust 编写的快速 Python 包和项目管理器。可用于通过 uvx 命令运行基于 Python 的 MCP 服务器。';
+
+  @override
+  String get uvStatusReady => '已安装';
+
+  @override
+  String get uvStatusNotInstalled => '未安装';
+
+  @override
+  String get uvStatusInstalling => '安装中...';
+
+  @override
+  String get uvStatusChecking => '检查中...';
+
+  @override
+  String get uvStatusError => '错误';
+
+  @override
+  String get uvStatusUnknown => '未知';
+
+  @override
+  String get uvUseMirror => '使用镜像加速下载（中国用户推荐）';
+
+  @override
+  String get uvDownload => '下载 UV';
+
+  @override
+  String get uvReinstall => '重新安装';
+
+  @override
+  String get uvOpenFolder => '打开目录';
+
+  @override
+  String get uvInstallSuccess => 'UV 安装成功';
+
+  @override
+  String get uvInstallFailed => 'UV 安装失败';
+
+  @override
   String get quickPhraseEditButton => '编辑';
 
   @override
@@ -10589,6 +10675,49 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get bunInstallFailed => 'Bun 安裝失敗';
+
+  @override
+  String get uvRuntimeTitle => 'UV 執行環境';
+
+  @override
+  String get uvRuntimeDescription =>
+      'UV 是一個用 Rust 編寫的快速 Python 套件和專案管理器。可用於透過 uvx 命令執行基於 Python 的 MCP 伺服器。';
+
+  @override
+  String get uvStatusReady => '已安裝';
+
+  @override
+  String get uvStatusNotInstalled => '未安裝';
+
+  @override
+  String get uvStatusInstalling => '安裝中...';
+
+  @override
+  String get uvStatusChecking => '檢查中...';
+
+  @override
+  String get uvStatusError => '錯誤';
+
+  @override
+  String get uvStatusUnknown => '未知';
+
+  @override
+  String get uvUseMirror => '使用鏡像加速下載（中國用戶推薦）';
+
+  @override
+  String get uvDownload => '下載 UV';
+
+  @override
+  String get uvReinstall => '重新安裝';
+
+  @override
+  String get uvOpenFolder => '開啟目錄';
+
+  @override
+  String get uvInstallSuccess => 'UV 安裝成功';
+
+  @override
+  String get uvInstallFailed => 'UV 安裝失敗';
 
   @override
   String get quickPhraseEditButton => '編輯';

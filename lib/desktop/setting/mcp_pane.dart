@@ -5,6 +5,7 @@ import '../../icons/lucide_adapter.dart' as lucide;
 import '../../l10n/app_localizations.dart';
 import '../../core/providers/mcp_provider.dart';
 import '../../core/providers/bun_runtime_provider.dart';
+import '../../core/providers/uv_runtime_provider.dart';
 import '../../shared/widgets/snackbar.dart';
 import 'mcp_edit_dialog.dart' show showDesktopMcpEditDialog;
 import 'mcp_json_edit_dialog.dart' show showDesktopMcpJsonEditDialog;
@@ -74,6 +75,12 @@ class DesktopMcpPane extends StatelessWidget {
               // Bun Runtime Card
               SliverToBoxAdapter(
                 child: _BunRuntimeCard(),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 12)),
+
+              // UV Runtime Card
+              SliverToBoxAdapter(
+                child: _UvRuntimeCard(),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 12)),
 
@@ -416,6 +423,281 @@ class _BunRuntimeCardState extends State<_BunRuntimeCard> {
       await mcp.onBunReady();
     } else if (!success && context.mounted) {
       showAppSnackBar(context, message: l10n.bunInstallFailed);
+    }
+  }
+}
+
+/// Card for managing UV runtime installation.
+class _UvRuntimeCard extends StatefulWidget {
+  const _UvRuntimeCard();
+
+  @override
+  State<_UvRuntimeCard> createState() => _UvRuntimeCardState();
+}
+
+class _UvRuntimeCardState extends State<_UvRuntimeCard> {
+  bool _hover = false;
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    final uv = context.watch<UvRuntimeProvider>();
+
+    // Don't show on unsupported platforms
+    if (!uv.isPlatformSupported) {
+      return const SizedBox.shrink();
+    }
+
+    final baseBg = isDark ? Colors.white10 : Colors.white.withOpacity(0.96);
+    final borderColor = _hover
+        ? cs.primary.withOpacity(isDark ? 0.35 : 0.45)
+        : cs.outlineVariant.withOpacity(isDark ? 0.12 : 0.08);
+
+    // Status info
+    Color statusColor;
+    String statusText;
+    IconData statusIcon;
+
+    switch (uv.status) {
+      case UvStatus.ready:
+        statusColor = Colors.green;
+        statusText = l10n.uvStatusReady;
+        statusIcon = lucide.Lucide.CircleCheck;
+        break;
+      case UvStatus.notInstalled:
+        statusColor = Colors.orange;
+        statusText = l10n.uvStatusNotInstalled;
+        statusIcon = lucide.Lucide.CircleAlert;
+        break;
+      case UvStatus.installing:
+        statusColor = cs.primary;
+        statusText = uv.installStatus.isNotEmpty ? uv.installStatus : l10n.uvStatusInstalling;
+        statusIcon = lucide.Lucide.Download;
+        break;
+      case UvStatus.checking:
+        statusColor = cs.primary;
+        statusText = l10n.uvStatusChecking;
+        statusIcon = lucide.Lucide.Loader;
+        break;
+      case UvStatus.error:
+        statusColor = Colors.red;
+        statusText = l10n.uvStatusError;
+        statusIcon = lucide.Lucide.CircleX;
+        break;
+      default:
+        statusColor = cs.outline;
+        statusText = l10n.uvStatusUnknown;
+        statusIcon = lucide.Lucide.CircleHelp;
+    }
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: GestureDetector(
+        onTap: () => setState(() => _expanded = !_expanded),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            color: baseBg,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: borderColor, width: 1.0),
+          ),
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header row
+              Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: isDark ? Colors.white10 : const Color(0xFFF2F3F5),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(lucide.Lucide.Zap, size: 18, color: cs.primary),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.uvRuntimeTitle,
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Icon(statusIcon, size: 14, color: statusColor),
+                            const SizedBox(width: 4),
+                            Flexible(
+                              child: Text(
+                                uv.version != null ? '$statusText (v${uv.version})' : statusText,
+                                style: TextStyle(fontSize: 12, color: statusColor),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    _expanded ? lucide.Lucide.ChevronUp : lucide.Lucide.ChevronDown,
+                    size: 18,
+                    color: cs.onSurface.withOpacity(0.5),
+                  ),
+                ],
+              ),
+
+              // Expanded content
+              if (_expanded) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.white.withOpacity(0.03) : const Color(0xFFF7F7F9),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.uvRuntimeDescription,
+                        style: TextStyle(fontSize: 13, color: cs.onSurface.withOpacity(0.7), height: 1.4),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Progress bar during installation
+                      if (uv.status == UvStatus.installing) ...[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: LinearProgressIndicator(
+                            value: uv.installProgress,
+                            backgroundColor: cs.surfaceContainerHighest,
+                            valueColor: AlwaysStoppedAnimation<Color>(cs.primary),
+                            minHeight: 6,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                      ],
+
+                      // Error message
+                      if (uv.status == UvStatus.error && uv.error != null) ...[
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.red.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.red.withOpacity(0.3)),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(lucide.Lucide.AlertTriangle, size: 14, color: Colors.red),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  uv.error!,
+                                  style: const TextStyle(fontSize: 12, color: Colors.red),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                      ],
+
+                      // Mirror toggle
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: uv.useMirror,
+                            onChanged: uv.isInstalling ? null : (v) => uv.setUseMirror(v ?? false),
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            visualDensity: VisualDensity.compact,
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: uv.isInstalling ? null : () => uv.setUseMirror(!uv.useMirror),
+                              child: Text(
+                                l10n.uvUseMirror,
+                                style: TextStyle(fontSize: 13, color: cs.onSurface.withOpacity(0.8)),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Action buttons
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          if (uv.status == UvStatus.notInstalled || uv.status == UvStatus.error)
+                            FilledButton.icon(
+                              onPressed: uv.isInstalling ? null : () => _installUv(context),
+                              icon: const Icon(lucide.Lucide.Download, size: 16),
+                              label: Text(l10n.uvDownload),
+                              style: FilledButton.styleFrom(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              ),
+                            ),
+                          if (uv.status == UvStatus.ready) ...[
+                            OutlinedButton.icon(
+                              onPressed: () => _installUv(context),
+                              icon: const Icon(lucide.Lucide.RefreshCw, size: 16),
+                              label: Text(l10n.uvReinstall),
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              ),
+                            ),
+                            OutlinedButton.icon(
+                              onPressed: () => uv.openInstallDirectory(),
+                              icon: const Icon(lucide.Lucide.FolderOpen, size: 16),
+                              label: Text(l10n.uvOpenFolder),
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _installUv(BuildContext context) async {
+    final uv = context.read<UvRuntimeProvider>();
+    final mcp = context.read<McpProvider>();
+    final l10n = AppLocalizations.of(context)!;
+
+    final success = await uv.install();
+    if (success && context.mounted) {
+      showAppSnackBar(context, message: l10n.uvInstallSuccess);
+      // Notify MCP provider that UV is ready
+      await mcp.onUvReady();
+    } else if (!success && context.mounted) {
+      showAppSnackBar(context, message: l10n.uvInstallFailed);
     }
   }
 }

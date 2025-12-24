@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mcp_client/mcp_client.dart' as mcp;
 import '../services/mcp/kelivo_fetch/kelivo_fetch_server.dart';
 import '../services/bun_runtime_service.dart';
+import '../services/uv_runtime_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -209,6 +210,7 @@ class McpProvider extends ChangeNotifier {
   static const String _prefsKey = 'mcp_servers_v1';
   static const String _prefsTimeoutKey = 'mcp_request_timeout_ms_v1';
   static const String _prefsUseBunKey = 'mcp_use_bun_v1';
+  static const String _prefsUseUvKey = 'mcp_use_uv_v1';
 
   final Map<String, mcp.Client> _clients = {};
   final Map<String, McpStatus> _status = {}; // id -> status
@@ -225,6 +227,11 @@ class McpProvider extends ChangeNotifier {
   bool _bunReady = false; // Whether Bun is ready (installed or check complete)
   bool _bunCheckComplete = false; // Whether initial Bun check is done
   final List<String> _pendingStdioConnections = []; // STDIO servers waiting for Bun
+
+  // UV runtime integration
+  bool _useUvForStdio = true; // Whether to use embedded UV for Python STDIO servers
+  bool _uvReady = false; // Whether UV is ready (installed or check complete)
+  bool _uvCheckComplete = false; // Whether initial UV check is done
 
   McpProvider() {
     _load();
@@ -249,6 +256,15 @@ class McpProvider extends ChangeNotifier {
   /// Whether Bun is ready to use.
   bool get bunReady => _bunReady;
 
+  /// Whether to use embedded UV for Python STDIO MCP servers.
+  bool get useUvForStdio => _useUvForStdio;
+
+  /// Whether UV environment check is complete.
+  bool get uvCheckComplete => _uvCheckComplete;
+
+  /// Whether UV is ready to use.
+  bool get uvReady => _uvReady;
+
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();
     final timeoutMs = prefs.getInt(_prefsTimeoutKey);
@@ -257,6 +273,8 @@ class McpProvider extends ChangeNotifier {
     }
     // Load Bun preference
     _useBunForStdio = prefs.getBool(_prefsUseBunKey) ?? true;
+    // Load UV preference
+    _useUvForStdio = prefs.getBool(_prefsUseUvKey) ?? true;
 
     final raw = prefs.getString(_prefsKey);
     if (raw != null && raw.isNotEmpty) {
@@ -283,7 +301,7 @@ class McpProvider extends ChangeNotifier {
   /// Check Bun availability and connect servers accordingly.
   ///
   /// - Non-STDIO servers connect immediately
-  /// - STDIO servers wait for Bun check to complete (if useBunForStdio is enabled)
+  /// - STDIO servers wait for Bun/UV check to complete (if enabled)
   Future<void> _checkBunAndConnect() async {
     final enabledServers = _servers.where((e) => e.enabled).toList();
     final stdioServers = enabledServers.where((s) => s.transport == McpTransportType.stdio).toList();
@@ -294,10 +312,12 @@ class McpProvider extends ChangeNotifier {
       unawaited(connect(s.id));
     }
 
-    // For STDIO servers, check Bun first if enabled
+    // For STDIO servers, check Bun and UV first if enabled
     if (stdioServers.isEmpty) {
       _bunCheckComplete = true;
       _bunReady = false;
+      _uvCheckComplete = true;
+      _uvReady = false;
       notifyListeners();
       return;
     }
@@ -319,11 +339,29 @@ class McpProvider extends ChangeNotifier {
       _bunReady = false;
     }
 
+    if (_useUvForStdio && _isDesktopPlatform()) {
+      // Check if UV is installed
+      try {
+        final uvService = UvRuntimeService.instance;
+        if (uvService.isPlatformSupported()) {
+          final installed = await uvService.isInstalled();
+          _uvReady = installed;
+        } else {
+          _uvReady = false;
+        }
+      } catch (_) {
+        _uvReady = false;
+      }
+    } else {
+      _uvReady = false;
+    }
+
     _bunCheckComplete = true;
+    _uvCheckComplete = true;
     notifyListeners();
 
     // Now connect STDIO servers
-    // If Bun is ready, they will use Bun; otherwise fall back to system command
+    // If Bun/UV is ready, they will use Bun/UV; otherwise fall back to system command
     for (final s in stdioServers) {
       unawaited(connect(s.id));
     }
@@ -352,6 +390,25 @@ class McpProvider extends ChangeNotifier {
     }
   }
 
+  /// Called when UV becomes ready (after installation).
+  /// Reconnects any Python-based STDIO servers.
+  Future<void> onUvReady() async {
+    _uvReady = true;
+    _uvCheckComplete = true;
+    notifyListeners();
+
+    // Try to reconnect any failed Python STDIO servers
+    for (final s in _servers.where((s) => s.enabled && s.transport == McpTransportType.stdio)) {
+      final cmd = s.command?.toLowerCase() ?? '';
+      // Check if it's a Python-based server
+      if (cmd == 'uvx' || cmd == 'uv' || cmd == 'python' || cmd == 'python3') {
+        if (statusFor(s.id) == McpStatus.error || statusFor(s.id) == McpStatus.idle) {
+          unawaited(connect(s.id));
+        }
+      }
+    }
+  }
+
   /// Set whether to use embedded Bun for STDIO servers.
   Future<void> setUseBunForStdio(bool value) async {
     if (_useBunForStdio == value) return;
@@ -361,6 +418,18 @@ class McpProvider extends ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool(_prefsUseBunKey, value);
+    } catch (_) {}
+  }
+
+  /// Set whether to use embedded UV for Python STDIO servers.
+  Future<void> setUseUvForStdio(bool value) async {
+    if (_useUvForStdio == value) return;
+    _useUvForStdio = value;
+    notifyListeners();
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_prefsUseUvKey, value);
     } catch (_) {}
   }
 
@@ -794,6 +863,21 @@ class McpProvider extends ChangeNotifier {
               // Use bun x instead of npx
               cmd = bunPath;
               args = ['x', ...server.args];
+            }
+          }
+
+          // If using UV and command is uvx/uv/python/python3, use embedded UV
+          if (_useUvForStdio && _uvReady && (cmd == 'uvx' || cmd == 'uv')) {
+            final uvPath = await UvRuntimeService.instance.getUvExecutablePath();
+            if (uvPath != null) {
+              if (cmd == 'uvx') {
+                // uvx is a shortcut for uv tool run
+                cmd = uvPath;
+                args = ['tool', 'run', ...server.args];
+              } else {
+                // uv command directly
+                cmd = uvPath;
+              }
             }
           }
 

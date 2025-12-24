@@ -6512,6 +6512,90 @@ abstract class AppLocalizations {
   /// **'Bun installation failed'**
   String get bunInstallFailed;
 
+  /// No description provided for @uvRuntimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'UV Runtime'**
+  String get uvRuntimeTitle;
+
+  /// No description provided for @uvRuntimeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'UV is a fast Python package and project manager written in Rust. It can be used for running Python-based MCP servers with uvx command.'**
+  String get uvRuntimeDescription;
+
+  /// No description provided for @uvStatusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed'**
+  String get uvStatusReady;
+
+  /// No description provided for @uvStatusNotInstalled.
+  ///
+  /// In en, this message translates to:
+  /// **'Not installed'**
+  String get uvStatusNotInstalled;
+
+  /// No description provided for @uvStatusInstalling.
+  ///
+  /// In en, this message translates to:
+  /// **'Installing...'**
+  String get uvStatusInstalling;
+
+  /// No description provided for @uvStatusChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking...'**
+  String get uvStatusChecking;
+
+  /// No description provided for @uvStatusError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get uvStatusError;
+
+  /// No description provided for @uvStatusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get uvStatusUnknown;
+
+  /// No description provided for @uvUseMirror.
+  ///
+  /// In en, this message translates to:
+  /// **'Use mirror for faster downloads (China)'**
+  String get uvUseMirror;
+
+  /// No description provided for @uvDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download UV'**
+  String get uvDownload;
+
+  /// No description provided for @uvReinstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Reinstall'**
+  String get uvReinstall;
+
+  /// No description provided for @uvOpenFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Folder'**
+  String get uvOpenFolder;
+
+  /// No description provided for @uvInstallSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'UV installed successfully'**
+  String get uvInstallSuccess;
+
+  /// No description provided for @uvInstallFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'UV installation failed'**
+  String get uvInstallFailed;
+
   /// No description provided for @quickPhraseEditButton.
   ///
   /// In en, this message translates to:

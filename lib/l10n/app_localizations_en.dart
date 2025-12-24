@@ -3473,6 +3473,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bunInstallFailed => 'Bun installation failed';
 
   @override
+  String get uvRuntimeTitle => 'UV Runtime';
+
+  @override
+  String get uvRuntimeDescription =>
+      'UV is a fast Python package and project manager written in Rust. It can be used for running Python-based MCP servers with uvx command.';
+
+  @override
+  String get uvStatusReady => 'Installed';
+
+  @override
+  String get uvStatusNotInstalled => 'Not installed';
+
+  @override
+  String get uvStatusInstalling => 'Installing...';
+
+  @override
+  String get uvStatusChecking => 'Checking...';
+
+  @override
+  String get uvStatusError => 'Error';
+
+  @override
+  String get uvStatusUnknown => 'Unknown';
+
+  @override
+  String get uvUseMirror => 'Use mirror for faster downloads (China)';
+
+  @override
+  String get uvDownload => 'Download UV';
+
+  @override
+  String get uvReinstall => 'Reinstall';
+
+  @override
+  String get uvOpenFolder => 'Open Folder';
+
+  @override
+  String get uvInstallSuccess => 'UV installed successfully';
+
+  @override
+  String get uvInstallFailed => 'UV installation failed';
+
+  @override
   String get quickPhraseEditButton => 'Edit';
 
   @override
