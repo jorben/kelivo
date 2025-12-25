@@ -45,7 +45,7 @@ import 'setting/mcp_pane.dart';
 import 'setting/tts_services_pane.dart';
 import 'setting/quick_phrases_pane.dart';
 import 'setting/instruction_injection_pane.dart';
-import 'setting/backup_pane.dart';
+import 'setting/data_management_pane.dart';
 import 'setting/hotkeys_pane.dart';
 import 'setting/network_proxy_pane.dart';
 import 'setting/about_pane.dart';
@@ -127,7 +127,7 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
         case _SettingsMenuItem.networkProxy:
           return l10n.settingsPageNetworkProxy;
         case _SettingsMenuItem.backup:
-          return l10n.settingsPageBackup;
+          return l10n.settingsPageDataSync;
         case _SettingsMenuItem.hotkeys:
           return l10n.settingsPageHotkeys;
         case _SettingsMenuItem.about:
@@ -196,7 +196,7 @@ class _DesktopSettingsPageState extends State<DesktopSettingsPage> {
                         case _SettingsMenuItem.networkProxy:
                           return const DesktopNetworkProxyPane(key: ValueKey('networkProxy'));
                         case _SettingsMenuItem.backup:
-                          return const DesktopBackupPane(key: ValueKey('backup'));
+                          return const DesktopDataManagementPane(key: ValueKey('backup'));
                         case _SettingsMenuItem.hotkeys:
                           return const DesktopHotkeysPane(key: ValueKey('hotkeys'));
                         case _SettingsMenuItem.quickPhrases:
@@ -246,7 +246,7 @@ class _SettingsMenu extends StatelessWidget {
       (_SettingsMenuItem.instructionInjection, lucide.Lucide.Layers, l10n.settingsPageInstructionInjection),
       (_SettingsMenuItem.tts, lucide.Lucide.Volume2, l10n.settingsPageTts),
       (_SettingsMenuItem.networkProxy, lucide.Lucide.EthernetPort, l10n.settingsPageNetworkProxy),
-      (_SettingsMenuItem.backup, lucide.Lucide.Database, l10n.settingsPageBackup),
+      (_SettingsMenuItem.backup, lucide.Lucide.RefreshCw, l10n.settingsPageDataSync),
       (_SettingsMenuItem.hotkeys, lucide.Lucide.Keyboard, l10n.settingsPageHotkeys),
       (_SettingsMenuItem.about, lucide.Lucide.BadgeInfo, l10n.settingsPageAbout),
     ];

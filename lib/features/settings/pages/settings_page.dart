@@ -13,7 +13,7 @@ import 'about_page.dart';
 import 'tts_services_page.dart';
 import 'sponsor_page.dart';
 import '../../search/pages/search_services_page.dart';
-import '../../backup/pages/backup_page.dart';
+import '../../sync/pages/data_management_page.dart';
 import '../../quick_phrase/pages/quick_phrases_page.dart';
 import '../../instruction_injection/pages/instruction_injection_page.dart';
 import 'network_proxy_page.dart';
@@ -264,11 +264,11 @@ class SettingsPage extends StatelessWidget {
           _iosSectionCard(children: [
             _iosNavRow(
               context,
-              icon: Lucide.Database,
-              label: l10n.settingsPageBackup,
+              icon: Lucide.RefreshCw,
+              label: l10n.settingsPageDataSync,
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const BackupPage()),
+                  MaterialPageRoute(builder: (_) => const DataManagementPage()),
                 );
               },
             ),

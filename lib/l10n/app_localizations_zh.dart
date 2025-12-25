@@ -3686,6 +3686,181 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get assistantEditDeleteSummaryContent => '确定要清除此摘要吗？';
+
+  @override
+  String get settingsPageDataSync => '数据同步';
+
+  @override
+  String get syncStatusNotConfigured => '未配置';
+
+  @override
+  String get syncStatusIdle => '就绪';
+
+  @override
+  String get syncStatusSyncing => '同步中...';
+
+  @override
+  String get syncStatusSynced => '已同步';
+
+  @override
+  String get syncStatusError => '错误';
+
+  @override
+  String get syncStatusOffline => '离线';
+
+  @override
+  String get syncSetupTitle => '多端数据同步';
+
+  @override
+  String get syncSetupDescription => '使用 Supabase 在多个设备间安全同步数据。所有数据均采用端到端加密。';
+
+  @override
+  String get syncSetupButton => '设置同步';
+
+  @override
+  String get syncStatusTitle => '同步状态';
+
+  @override
+  String get syncCurrentStatus => '当前状态';
+
+  @override
+  String get syncLastSyncTime => '上次同步';
+
+  @override
+  String get syncNeverSynced => '从未同步';
+
+  @override
+  String get syncPendingChanges => '待同步变更';
+
+  @override
+  String get syncNowButton => '立即同步';
+
+  @override
+  String get syncSuccess => '同步完成';
+
+  @override
+  String get syncFailed => '同步失败';
+
+  @override
+  String get syncSecurityTitle => '安全';
+
+  @override
+  String get syncE2EEncryption => '端到端加密';
+
+  @override
+  String get syncE2EEncryptionDescription =>
+      '所有数据在上传前均使用 AES-256-GCM 加密，只有您能解密。';
+
+  @override
+  String get syncSettingsTitle => '设置';
+
+  @override
+  String get syncModifySettings => '修改同步设置';
+
+  @override
+  String get syncResetButton => '重置同步';
+
+  @override
+  String get syncResetSuccess => '同步已重置';
+
+  @override
+  String get syncResetConfirmTitle => '重置同步？';
+
+  @override
+  String get syncResetConfirmMessage => '这将断开同步连接并清除所有同步数据。您的本地数据不会受到影响。';
+
+  @override
+  String get syncConfigTitle => 'Supabase 配置';
+
+  @override
+  String get syncUpdateConfig => '更新配置';
+
+  @override
+  String get syncStartSync => '开始同步';
+
+  @override
+  String get syncWizardTitle => '同步设置';
+
+  @override
+  String get syncWizardStep1Title => 'Supabase 配置';
+
+  @override
+  String get syncWizardStep1Subtitle => '输入您的 Supabase 项目信息';
+
+  @override
+  String get syncWizardStep2Title => '同步密钥';
+
+  @override
+  String get syncWizardStep2Subtitle => '设置加密密钥';
+
+  @override
+  String get syncWizardStep3Title => '确认';
+
+  @override
+  String get syncWizardStep3Subtitle => '检查并开始同步';
+
+  @override
+  String get syncWizardUrlLabel => '服务地址';
+
+  @override
+  String get syncWizardUrlRequired => '请输入服务地址';
+
+  @override
+  String get syncWizardUrlInvalid => 'URL 格式无效';
+
+  @override
+  String get syncWizardAnonKeyLabel => 'Anon Key';
+
+  @override
+  String get syncWizardAnonKeyRequired => '请输入 Anon Key';
+
+  @override
+  String get syncWizardSyncKeyLabel => '同步密钥';
+
+  @override
+  String get syncWizardSyncKeyHint => '输入或生成同步密钥';
+
+  @override
+  String get syncWizardSyncKeyRequired => '请输入同步密钥';
+
+  @override
+  String get syncWizardSyncKeyTooShort => '同步密钥至少需要 8 个字符';
+
+  @override
+  String get syncWizardGenerateKey => '随机生成';
+
+  @override
+  String get syncWizardPasteKey => '粘贴';
+
+  @override
+  String get syncWizardStep1Help => '在 Supabase 项目的 Settings → API 中找到这些信息';
+
+  @override
+  String get syncWizardStep2Help => '请妥善保管此密钥！其他设备需要使用相同的密钥才能同步。';
+
+  @override
+  String get syncWizardStep3Help => '点击完成以初始化同步服务';
+
+  @override
+  String get syncWizardNext => '下一步';
+
+  @override
+  String get syncWizardBack => '上一步';
+
+  @override
+  String get syncWizardComplete => '完成';
+
+  @override
+  String get syncWizardFillAllFields => '请填写所有字段';
+
+  @override
+  String get syncWizardInitSuccess => '同步服务初始化成功';
+
+  @override
+  String get syncWizardConnectSuccess => '已连接到同步服务';
+
+  @override
+  String get syncWizardFailed => '同步设置失败';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hans`).

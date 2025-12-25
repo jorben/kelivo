@@ -3824,4 +3824,184 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get assistantEditDeleteSummaryContent =>
       'Are you sure you want to clear this summary?';
+
+  @override
+  String get settingsPageDataSync => 'Data Sync';
+
+  @override
+  String get syncStatusNotConfigured => 'Not Configured';
+
+  @override
+  String get syncStatusIdle => 'Ready';
+
+  @override
+  String get syncStatusSyncing => 'Syncing...';
+
+  @override
+  String get syncStatusSynced => 'Synced';
+
+  @override
+  String get syncStatusError => 'Error';
+
+  @override
+  String get syncStatusOffline => 'Offline';
+
+  @override
+  String get syncSetupTitle => 'Multi-Device Sync';
+
+  @override
+  String get syncSetupDescription =>
+      'Sync your data across multiple devices securely using Supabase. All data is end-to-end encrypted.';
+
+  @override
+  String get syncSetupButton => 'Set Up Sync';
+
+  @override
+  String get syncStatusTitle => 'Sync Status';
+
+  @override
+  String get syncCurrentStatus => 'Current Status';
+
+  @override
+  String get syncLastSyncTime => 'Last Sync';
+
+  @override
+  String get syncNeverSynced => 'Never';
+
+  @override
+  String get syncPendingChanges => 'Pending Changes';
+
+  @override
+  String get syncNowButton => 'Sync Now';
+
+  @override
+  String get syncSuccess => 'Sync completed';
+
+  @override
+  String get syncFailed => 'Sync failed';
+
+  @override
+  String get syncSecurityTitle => 'Security';
+
+  @override
+  String get syncE2EEncryption => 'End-to-End Encryption';
+
+  @override
+  String get syncE2EEncryptionDescription =>
+      'All data is encrypted with AES-256-GCM before uploading. Only you can decrypt it.';
+
+  @override
+  String get syncSettingsTitle => 'Settings';
+
+  @override
+  String get syncModifySettings => 'Modify Sync Settings';
+
+  @override
+  String get syncResetButton => 'Reset Sync';
+
+  @override
+  String get syncResetSuccess => 'Sync has been reset';
+
+  @override
+  String get syncResetConfirmTitle => 'Reset Sync?';
+
+  @override
+  String get syncResetConfirmMessage =>
+      'This will disconnect sync and clear all sync data. Your local data will not be affected.';
+
+  @override
+  String get syncConfigTitle => 'Supabase Configuration';
+
+  @override
+  String get syncUpdateConfig => 'Update Configuration';
+
+  @override
+  String get syncStartSync => 'Start Sync';
+
+  @override
+  String get syncWizardTitle => 'Sync Setup';
+
+  @override
+  String get syncWizardStep1Title => 'Supabase Config';
+
+  @override
+  String get syncWizardStep1Subtitle => 'Enter your Supabase project details';
+
+  @override
+  String get syncWizardStep2Title => 'Sync Key';
+
+  @override
+  String get syncWizardStep2Subtitle => 'Set up your encryption key';
+
+  @override
+  String get syncWizardStep3Title => 'Confirm';
+
+  @override
+  String get syncWizardStep3Subtitle => 'Review and start sync';
+
+  @override
+  String get syncWizardUrlLabel => 'Supabase URL';
+
+  @override
+  String get syncWizardUrlRequired => 'URL is required';
+
+  @override
+  String get syncWizardUrlInvalid => 'Invalid URL format';
+
+  @override
+  String get syncWizardAnonKeyLabel => 'Anon Key';
+
+  @override
+  String get syncWizardAnonKeyRequired => 'Anon Key is required';
+
+  @override
+  String get syncWizardSyncKeyLabel => 'Sync Key';
+
+  @override
+  String get syncWizardSyncKeyHint => 'Enter or generate a sync key';
+
+  @override
+  String get syncWizardSyncKeyRequired => 'Sync Key is required';
+
+  @override
+  String get syncWizardSyncKeyTooShort =>
+      'Sync Key must be at least 8 characters';
+
+  @override
+  String get syncWizardGenerateKey => 'Generate';
+
+  @override
+  String get syncWizardPasteKey => 'Paste';
+
+  @override
+  String get syncWizardStep1Help =>
+      'Find these in your Supabase project Settings → API';
+
+  @override
+  String get syncWizardStep2Help =>
+      'Keep this key safe! Other devices need the same key to sync.';
+
+  @override
+  String get syncWizardStep3Help => 'Click Complete to initialize sync service';
+
+  @override
+  String get syncWizardNext => 'Next';
+
+  @override
+  String get syncWizardBack => 'Back';
+
+  @override
+  String get syncWizardComplete => 'Complete';
+
+  @override
+  String get syncWizardFillAllFields => 'Please fill in all fields';
+
+  @override
+  String get syncWizardInitSuccess => 'Sync service initialized';
+
+  @override
+  String get syncWizardConnectSuccess => 'Connected to sync service';
+
+  @override
+  String get syncWizardFailed => 'Failed to set up sync';
 }

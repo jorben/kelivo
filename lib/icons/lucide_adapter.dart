@@ -118,6 +118,8 @@ class Lucide {
   static const IconData ListOrdered = lucide.LucideIcons.listOrdered;
   static const IconData circleDot = lucide.LucideIcons.circleCheck;
   static const IconData cloudDownload = lucide.LucideIcons.cloudDownload;
+  static const IconData CloudUpload = lucide.LucideIcons.cloudUpload;
+  static const IconData ShieldCheck = lucide.LucideIcons.shieldCheck;
   static const IconData Thermometer = lucide.LucideIcons.thermometer;
   static const IconData Wand2 = lucide.LucideIcons.wand;
   static const IconData MessagesSquare = lucide.LucideIcons.messageSquare;
@@ -137,6 +139,13 @@ class Lucide {
   static const IconData Cut = lucide.LucideIcons.scissors;
   static const IconData Keyboard = lucide.LucideIcons.keyboard;
   static const IconData WrapText = lucide.LucideIcons.textWrap;
+  static const IconData CircleDashed = lucide.LucideIcons.circleDashed;
+  static const IconData WifiOff = lucide.LucideIcons.wifiOff;
+  static const IconData Clock = lucide.LucideIcons.clock;
+  static const IconData Key = lucide.LucideIcons.key;
+  static const IconData HelpCircle = lucide.LucideIcons.circleQuestionMark;
+  static const IconData Lock = lucide.LucideIcons.lock;
+  static const IconData Info = lucide.LucideIcons.info;
   static const IconData RefreshCcwDot = lucide.LucideIcons.refreshCcwDot;
   static const IconData Layers = lucide.LucideIcons.layers2;
   static const IconData Shapes = lucide.LucideIcons.shapes;

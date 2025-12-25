@@ -30,6 +30,7 @@ import 'core/providers/instruction_injection_provider.dart';
 import 'core/providers/memory_provider.dart';
 import 'core/providers/backup_provider.dart';
 import 'core/providers/hotkey_provider.dart';
+import 'core/providers/sync_provider.dart';
 import 'core/services/chat/chat_service.dart';
 import 'core/services/mcp/mcp_tool_service.dart';
 import 'core/services/logging/flutter_logger.dart';
@@ -134,6 +135,37 @@ class MyApp extends StatelessWidget {
             chatService: ctx.read<ChatService>(),
             initialConfig: ctx.read<SettingsProvider>().webDavConfig,
           ),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) {
+            final syncProvider = SyncProvider();
+            final chatService = ctx.read<ChatService>();
+            final assistantProvider = ctx.read<AssistantProvider>();
+            
+            // 设置数据提供者回调
+            syncProvider.setDataProviders(
+              onGetAllConversations: () async {
+                return chatService.getAllConversations()
+                    .map((c) => c.toJson())
+                    .toList();
+              },
+              onGetMessagesForConversation: (conversationId) async {
+                return chatService.getMessages(conversationId)
+                    .map((m) => m.toJson())
+                    .toList();
+              },
+              onGetAllAssistants: () async {
+                return assistantProvider.assistants
+                    .map((a) => a.toJson())
+                    .toList();
+              },
+            );
+            
+            // 启动时自动初始化，加载保存的配置
+            syncProvider.initialize();
+            
+            return syncProvider;
+          },
         ),
       ],
       child: Builder(

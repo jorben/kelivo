@@ -7177,6 +7177,354 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to clear this summary?'**
   String get assistantEditDeleteSummaryContent;
+
+  /// No description provided for @settingsPageDataSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Sync'**
+  String get settingsPageDataSync;
+
+  /// No description provided for @syncStatusNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Configured'**
+  String get syncStatusNotConfigured;
+
+  /// No description provided for @syncStatusIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get syncStatusIdle;
+
+  /// No description provided for @syncStatusSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing...'**
+  String get syncStatusSyncing;
+
+  /// No description provided for @syncStatusSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get syncStatusSynced;
+
+  /// No description provided for @syncStatusError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get syncStatusError;
+
+  /// No description provided for @syncStatusOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get syncStatusOffline;
+
+  /// No description provided for @syncSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-Device Sync'**
+  String get syncSetupTitle;
+
+  /// No description provided for @syncSetupDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync your data across multiple devices securely using Supabase. All data is end-to-end encrypted.'**
+  String get syncSetupDescription;
+
+  /// No description provided for @syncSetupButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Set Up Sync'**
+  String get syncSetupButton;
+
+  /// No description provided for @syncStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Status'**
+  String get syncStatusTitle;
+
+  /// No description provided for @syncCurrentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Status'**
+  String get syncCurrentStatus;
+
+  /// No description provided for @syncLastSyncTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Sync'**
+  String get syncLastSyncTime;
+
+  /// No description provided for @syncNeverSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get syncNeverSynced;
+
+  /// No description provided for @syncPendingChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Changes'**
+  String get syncPendingChanges;
+
+  /// No description provided for @syncNowButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Now'**
+  String get syncNowButton;
+
+  /// No description provided for @syncSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync completed'**
+  String get syncSuccess;
+
+  /// No description provided for @syncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed'**
+  String get syncFailed;
+
+  /// No description provided for @syncSecurityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get syncSecurityTitle;
+
+  /// No description provided for @syncE2EEncryption.
+  ///
+  /// In en, this message translates to:
+  /// **'End-to-End Encryption'**
+  String get syncE2EEncryption;
+
+  /// No description provided for @syncE2EEncryptionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'All data is encrypted with AES-256-GCM before uploading. Only you can decrypt it.'**
+  String get syncE2EEncryptionDescription;
+
+  /// No description provided for @syncSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get syncSettingsTitle;
+
+  /// No description provided for @syncModifySettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify Sync Settings'**
+  String get syncModifySettings;
+
+  /// No description provided for @syncResetButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Sync'**
+  String get syncResetButton;
+
+  /// No description provided for @syncResetSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync has been reset'**
+  String get syncResetSuccess;
+
+  /// No description provided for @syncResetConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Sync?'**
+  String get syncResetConfirmTitle;
+
+  /// No description provided for @syncResetConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will disconnect sync and clear all sync data. Your local data will not be affected.'**
+  String get syncResetConfirmMessage;
+
+  /// No description provided for @syncConfigTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Supabase Configuration'**
+  String get syncConfigTitle;
+
+  /// No description provided for @syncUpdateConfig.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Configuration'**
+  String get syncUpdateConfig;
+
+  /// No description provided for @syncStartSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Sync'**
+  String get syncStartSync;
+
+  /// No description provided for @syncWizardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Setup'**
+  String get syncWizardTitle;
+
+  /// No description provided for @syncWizardStep1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Supabase Config'**
+  String get syncWizardStep1Title;
+
+  /// No description provided for @syncWizardStep1Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your Supabase project details'**
+  String get syncWizardStep1Subtitle;
+
+  /// No description provided for @syncWizardStep2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Key'**
+  String get syncWizardStep2Title;
+
+  /// No description provided for @syncWizardStep2Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up your encryption key'**
+  String get syncWizardStep2Subtitle;
+
+  /// No description provided for @syncWizardStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get syncWizardStep3Title;
+
+  /// No description provided for @syncWizardStep3Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review and start sync'**
+  String get syncWizardStep3Subtitle;
+
+  /// No description provided for @syncWizardUrlLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Supabase URL'**
+  String get syncWizardUrlLabel;
+
+  /// No description provided for @syncWizardUrlRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'URL is required'**
+  String get syncWizardUrlRequired;
+
+  /// No description provided for @syncWizardUrlInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid URL format'**
+  String get syncWizardUrlInvalid;
+
+  /// No description provided for @syncWizardAnonKeyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Anon Key'**
+  String get syncWizardAnonKeyLabel;
+
+  /// No description provided for @syncWizardAnonKeyRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Anon Key is required'**
+  String get syncWizardAnonKeyRequired;
+
+  /// No description provided for @syncWizardSyncKeyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Key'**
+  String get syncWizardSyncKeyLabel;
+
+  /// No description provided for @syncWizardSyncKeyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter or generate a sync key'**
+  String get syncWizardSyncKeyHint;
+
+  /// No description provided for @syncWizardSyncKeyRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Key is required'**
+  String get syncWizardSyncKeyRequired;
+
+  /// No description provided for @syncWizardSyncKeyTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Key must be at least 8 characters'**
+  String get syncWizardSyncKeyTooShort;
+
+  /// No description provided for @syncWizardGenerateKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate'**
+  String get syncWizardGenerateKey;
+
+  /// No description provided for @syncWizardPasteKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste'**
+  String get syncWizardPasteKey;
+
+  /// No description provided for @syncWizardStep1Help.
+  ///
+  /// In en, this message translates to:
+  /// **'Find these in your Supabase project Settings → API'**
+  String get syncWizardStep1Help;
+
+  /// No description provided for @syncWizardStep2Help.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this key safe! Other devices need the same key to sync.'**
+  String get syncWizardStep2Help;
+
+  /// No description provided for @syncWizardStep3Help.
+  ///
+  /// In en, this message translates to:
+  /// **'Click Complete to initialize sync service'**
+  String get syncWizardStep3Help;
+
+  /// No description provided for @syncWizardNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get syncWizardNext;
+
+  /// No description provided for @syncWizardBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get syncWizardBack;
+
+  /// No description provided for @syncWizardComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get syncWizardComplete;
+
+  /// No description provided for @syncWizardFillAllFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all fields'**
+  String get syncWizardFillAllFields;
+
+  /// No description provided for @syncWizardInitSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync service initialized'**
+  String get syncWizardInitSuccess;
+
+  /// No description provided for @syncWizardConnectSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to sync service'**
+  String get syncWizardConnectSuccess;
+
+  /// No description provided for @syncWizardFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to set up sync'**
+  String get syncWizardFailed;
 }
 
 class _AppLocalizationsDelegate
